@@ -1,17 +1,16 @@
-package ru.hogwarts.additionalcoursescool.service;
+package ru.hogwarts.additionalcoursescool.services;
 
 import ru.hogwarts.additionalcoursescool.model.Faculty;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-public interface HouseService {
+public interface FacultyService {
     Faculty createFaculty(Faculty faculty);
     Faculty findFacultyById(Long facultyId);
     List<Faculty> findFacultyByColor(String color);
-    Map<Long, Faculty> findAllFaculties();
-    Faculty updateFaculty(Long facultyId, Faculty faculty);
-    Faculty deleteFaculty(Long facultyId);
-
+    Collection<Faculty> findAllFaculties();
+    Faculty updateFaculty(Faculty faculty);
+    void deleteFaculty(Long facultyId);
     void deleteAllFaculties();
 }

@@ -1,4 +1,4 @@
-package ru.hogwarts.additionalcoursescool.controller;
+package ru.hogwarts.additionalcoursescool.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,10 +12,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.additionalcoursescool.model.Student;
-import ru.hogwarts.additionalcoursescool.service.StudentService;
+import ru.hogwarts.additionalcoursescool.services.StudentService;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/student")
@@ -156,15 +156,15 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<Map<Long, Student>> getAllStudents() {
-        Map<Long, Student> students = studentService.findAllStudents();
+    public ResponseEntity<Collection<Student>> getAllStudents() {
+        Collection<Student> students = studentService.findAllStudents();
         if (students == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(students);
     }
 
-    @PutMapping("/{studentId}")
+    @PutMapping
     @Operation(
             summary = "Update student by its number",
             description = "Search by student number to update it"
@@ -196,8 +196,8 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<Student> updateStudent(@PathVariable Long studentId, @RequestBody Student student) {
-        Student student1 = studentService.updateStudent(studentId, student);
+    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
+        Student student1 = studentService.updateStudent(student);
         if (student1 == null) {
             return ResponseEntity.notFound().build();
         }

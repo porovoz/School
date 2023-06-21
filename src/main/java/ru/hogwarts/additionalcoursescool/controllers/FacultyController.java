@@ -1,4 +1,4 @@
-package ru.hogwarts.additionalcoursescool.controller;
+package ru.hogwarts.additionalcoursescool.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,19 +12,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.additionalcoursescool.model.Faculty;
-import ru.hogwarts.additionalcoursescool.service.HouseService;
+import ru.hogwarts.additionalcoursescool.services.FacultyService;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/faculty")
 @Tag(name = "Faculties", description = "CRUD-operations to work with the faculties")
-public class HouseController {
-    private final HouseService houseService;
+public class FacultyController {
+    private final FacultyService facultyService;
 
-    public HouseController(HouseService houseService) {
-        this.houseService = houseService;
+    public FacultyController(FacultyService facultyService) {
+        this.facultyService = facultyService;
     }
 
     @PostMapping
@@ -46,7 +46,7 @@ public class HouseController {
             )
     })
     public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
-        Faculty createdFaculty = houseService.createFaculty(faculty);
+        Faculty createdFaculty = facultyService.createFaculty(faculty);
         return ResponseEntity.ok(createdFaculty);
     }
 
@@ -83,7 +83,7 @@ public class HouseController {
             )
     })
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long facultyId) {
-        Faculty faculty = houseService.findFacultyById(facultyId);
+        Faculty faculty = facultyService.findFacultyById(facultyId);
         if (faculty == null) {
             return ResponseEntity.notFound().build();
         }
@@ -120,7 +120,7 @@ public class HouseController {
             )
     })
     public ResponseEntity<List<Faculty>> getFacultyByColor(@RequestParam String color) {
-        List<Faculty> faculties = houseService.findFacultyByColor(color);
+        List<Faculty> faculties = facultyService.findFacultyByColor(color);
         if (faculties == null) {
             return ResponseEntity.notFound().build();
         }
@@ -156,15 +156,15 @@ public class HouseController {
                     }
             )
     })
-    public ResponseEntity<Map<Long, Faculty>> getAllFaculties() {
-        Map<Long, Faculty> faculties = houseService.findAllFaculties();
+    public ResponseEntity<Collection<Faculty>> getAllFaculties() {
+        Collection<Faculty> faculties = facultyService.findAllFaculties();
         if (faculties == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculties);
     }
 
-    @PutMapping("/{facultyId}")
+    @PutMapping
     @Operation(
             summary = "Update faculty by its number",
             description = "Search by faculty number to update it"
@@ -196,8 +196,8 @@ public class HouseController {
                     }
             )
     })
-    public ResponseEntity<Faculty> updateFaculty(@PathVariable Long facultyId, @RequestBody Faculty faculty) {
-        Faculty faculty1 = houseService.updateFaculty(facultyId, faculty);
+    public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
+        Faculty faculty1 = facultyService.updateFaculty(faculty);
         if (faculty1 == null) {
             return ResponseEntity.notFound().build();
         }
@@ -223,7 +223,7 @@ public class HouseController {
             )
     })
     public ResponseEntity<Void> deleteFacultyById(@PathVariable Long facultyId) {
-        houseService.deleteFaculty(facultyId);
+        facultyService.deleteFaculty(facultyId);
         return ResponseEntity.ok().build();
     }
 
@@ -239,7 +239,7 @@ public class HouseController {
             )
     })
     public ResponseEntity<Void> deleteAllFaculties() {
-        houseService.deleteAllFaculties();
+        facultyService.deleteAllFaculties();
         return ResponseEntity.ok().build();
     }
 }
