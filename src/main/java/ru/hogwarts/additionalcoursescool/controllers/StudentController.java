@@ -11,10 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.additionalcoursescool.dto.StudentDTO;
 import ru.hogwarts.additionalcoursescool.model.Student;
 import ru.hogwarts.additionalcoursescool.services.StudentService;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -45,9 +45,9 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student createdStudent = studentService.createStudent(student);
-        return ResponseEntity.ok(createdStudent);
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
+        StudentDTO createdStudentDTO = studentService.createStudent(studentDTO);
+        return ResponseEntity.ok(createdStudentDTO);
     }
 
     @GetMapping("/{studentId}")
@@ -82,12 +82,12 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<Student> getStudent(@PathVariable Long studentId) {
-        Student student = studentService.findStudentById(studentId);
-        if (student == null) {
+    public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {
+        StudentDTO studentDTO = studentService.findStudentById(studentId);
+        if (studentDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(studentDTO);
     }
 
     @GetMapping("/findByAge")
@@ -119,12 +119,86 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<List<Student>> getStudentByAge(@RequestParam int age) {
-        List<Student> students = studentService.findStudentByAge(age);
-        if (students == null) {
+    public ResponseEntity<List<StudentDTO>> getStudentByAge(@RequestParam int age) {
+        List<StudentDTO> studentDTOS = studentService.findStudentByAge(age);
+        if (studentDTOS == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(students);
+        return ResponseEntity.ok(studentDTOS);
+    }
+
+    @GetMapping("/findByAgeBetween")
+    @Operation(
+            summary = "Find student list by age between",
+            description = "Show student list by age between"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Student list was successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Student list was not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            )
+    })
+    public ResponseEntity<List<StudentDTO>> getStudentByAgeBetween(@RequestParam int min, @RequestParam int max) {
+        List<StudentDTO> studentDTOS = studentService.findStudentByAgeBetween(min, max);
+        if (studentDTOS == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(studentDTOS);
+    }
+
+    @GetMapping("/getStudentsByFacultyId")
+    @Operation(
+            summary = "Find student by faculty id",
+            description = "Search by faculty id"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Student was successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Student not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            )
+    })
+    ResponseEntity<List<StudentDTO>> getStudentsByFacultyId(@RequestParam Long facultyId) {
+        List<StudentDTO> studentDTOS = studentService.findStudentByFacultyId(facultyId);
+        if (studentDTOS == null) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(studentDTOS);
     }
 
     @GetMapping
@@ -156,12 +230,12 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<Collection<Student>> getAllStudents() {
-        Collection<Student> students = studentService.findAllStudents();
-        if (students == null) {
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        List<StudentDTO> studentDTOS = studentService.findAllStudents();
+        if (studentDTOS == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(students);
+        return ResponseEntity.ok(studentDTOS);
     }
 
     @PutMapping
@@ -196,12 +270,12 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-        Student student1 = studentService.updateStudent(student);
-        if (student1 == null) {
+    public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO) {
+        StudentDTO updatedStudentDTO = studentService.updateStudent(studentDTO);
+        if (updatedStudentDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student1);
+        return ResponseEntity.ok(updatedStudentDTO);
     }
 
     @DeleteMapping("/{studentId}")

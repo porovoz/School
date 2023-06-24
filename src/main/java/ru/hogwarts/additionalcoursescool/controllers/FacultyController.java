@@ -11,10 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.additionalcoursescool.dto.FacultyDTO;
 import ru.hogwarts.additionalcoursescool.model.Faculty;
 import ru.hogwarts.additionalcoursescool.services.FacultyService;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -45,9 +45,9 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
-        Faculty createdFaculty = facultyService.createFaculty(faculty);
-        return ResponseEntity.ok(createdFaculty);
+    public ResponseEntity<FacultyDTO> createFaculty(@RequestBody FacultyDTO facultyDTO) {
+        FacultyDTO createdFacultyDTO = facultyService.createFaculty(facultyDTO);
+        return ResponseEntity.ok(createdFacultyDTO);
     }
 
     @GetMapping("/{facultyId}")
@@ -82,15 +82,15 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<Faculty> getFaculty(@PathVariable Long facultyId) {
-        Faculty faculty = facultyService.findFacultyById(facultyId);
-        if (faculty == null) {
+    public ResponseEntity<FacultyDTO> getFaculty(@PathVariable Long facultyId) {
+        FacultyDTO facultyDTO = facultyService.findFacultyById(facultyId);
+        if (facultyDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculty);
+        return ResponseEntity.ok(facultyDTO);
     }
 
-    @GetMapping("/findByAColor")
+    @GetMapping("/findByColor")
     @Operation(
             summary = "Find faculty list by color",
             description = "Show faculty list by color"
@@ -119,12 +119,86 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<List<Faculty>> getFacultyByColor(@RequestParam String color) {
-        List<Faculty> faculties = facultyService.findFacultyByColor(color);
-        if (faculties == null) {
+    public ResponseEntity<List<FacultyDTO>> getFacultyByColor(@RequestParam String color) {
+        List<FacultyDTO> facultyDTOS = facultyService.findFacultyByColor(color);
+        if (facultyDTOS == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculties);
+        return ResponseEntity.ok(facultyDTOS);
+    }
+
+    @GetMapping("/findFacultyByName")
+    @Operation(
+            summary = "Find faculty by name",
+            description = "Show faculty by name"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Faculty was successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Faculty.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Faculty was not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Faculty.class))
+                            )
+                    }
+            )
+    })
+    public ResponseEntity<FacultyDTO> getFacultyByName(@RequestParam String name) {
+        FacultyDTO facultyDTO = facultyService.findFacultyByNameIgnoreCase(name);
+        if (facultyDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(facultyDTO);
+    }
+
+    @GetMapping("/findByStudentId")
+    @Operation(
+            summary = "Find faculty by student id",
+            description = "Show faculty by student id"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Faculty was successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Faculty.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Faculty was not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Faculty.class))
+                            )
+                    }
+            )
+    })
+    public ResponseEntity<FacultyDTO> getFacultyByStudentId(@RequestParam Long studentId) {
+        FacultyDTO facultyDTO = facultyService.findFacultyByStudentId(studentId);
+        if (facultyDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(facultyDTO);
     }
 
     @GetMapping
@@ -156,12 +230,12 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<Collection<Faculty>> getAllFaculties() {
-        Collection<Faculty> faculties = facultyService.findAllFaculties();
-        if (faculties == null) {
+    public ResponseEntity<List<FacultyDTO>> getAllFaculties() {
+        List<FacultyDTO> facultyDTOS = facultyService.findAllFaculties();
+        if (facultyDTOS == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculties);
+        return ResponseEntity.ok(facultyDTOS);
     }
 
     @PutMapping
@@ -196,12 +270,12 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
-        Faculty faculty1 = facultyService.updateFaculty(faculty);
-        if (faculty1 == null) {
+    public ResponseEntity<FacultyDTO> updateFaculty(@RequestBody FacultyDTO facultyDTO) {
+        FacultyDTO updatedFacultyDTO = facultyService.updateFaculty(facultyDTO);
+        if (updatedFacultyDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculty1);
+        return ResponseEntity.ok(updatedFacultyDTO);
     }
 
     @DeleteMapping("/{facultyId}")

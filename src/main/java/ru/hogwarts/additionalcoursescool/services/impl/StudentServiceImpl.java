@@ -1,45 +1,87 @@
 package ru.hogwarts.additionalcoursescool.services.impl;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.additionalcoursescool.dto.StudentDTO;
 import ru.hogwarts.additionalcoursescool.model.Student;
+import ru.hogwarts.additionalcoursescool.repositories.FacultyRepository;
 import ru.hogwarts.additionalcoursescool.repositories.StudentRepository;
 import ru.hogwarts.additionalcoursescool.services.StudentService;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final FacultyRepository facultyRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository,
+                              FacultyRepository facultyRepository) {
         this.studentRepository = studentRepository;
+        this.facultyRepository = facultyRepository;
     }
 
     @Override
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
+    public StudentDTO createStudent(StudentDTO studentDTO) {
+        studentRepository.save(toStudent(studentDTO));
+        return studentDTO;
     }
 
     @Override
-    public Student findStudentById(Long studentId) {
-        return studentRepository.findById(studentId).get();
+    public StudentDTO findStudentById(Long studentId) {
+        Student student = studentRepository.findById(studentId).get();
+        return fromStudent(student);
     }
 
     @Override
-    public List<Student> findStudentByAge(int age) {
-        return studentRepository.findStudentByAge(age);
+    public List<StudentDTO> findStudentByAge(int age) {
+        List<Student> students = studentRepository.findStudentByAge(age);
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentDTO = fromStudent(student);
+            studentDTOS.add(studentDTO);
+        }
+        return studentDTOS;
     }
 
     @Override
-    public Collection<Student> findAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> findStudentByAgeBetween(int min, int max) {
+        List<Student> students = studentRepository.findStudentByAgeBetween(min, max);
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentDTO = fromStudent(student);
+            studentDTOS.add(studentDTO);
+        }
+        return studentDTOS;
     }
 
     @Override
-    public Student updateStudent(Student student) {
-        return studentRepository.save(student);
+    public List<StudentDTO> findStudentByFacultyId(Long facultyId) {
+        List<Student> students = studentRepository.findStudentByFaculty_Id(facultyId);
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentDTO = fromStudent(student);
+            studentDTOS.add(studentDTO);
+        }
+        return studentDTOS;
+    }
+
+    @Override
+    public List<StudentDTO> findAllStudents() {
+        List<Student> students = studentRepository.findAll();
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentDTO = fromStudent(student);
+            studentDTOS.add(studentDTO);
+        }
+        return studentDTOS;
+    }
+
+    @Override
+    public StudentDTO updateStudent(StudentDTO studentDTO) {
+        studentRepository.save(toStudent(studentDTO));
+        return studentDTO;
     }
 
     @Override
@@ -50,5 +92,24 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteAllStudents() {
         studentRepository.deleteAll();
+    }
+
+    private StudentDTO fromStudent(Student student) {
+        StudentDTO dto = new StudentDTO();
+        dto.setId(student.getId());
+        dto.setName(student.getName());
+        dto.setAge(student.getAge());
+        dto.setFacultyId(student.getFaculty().getId());
+        dto.setFaculty(FacultyServiceImpl.fromFaculty(student.getFaculty()));
+        return dto;
+    }
+
+    private Student toStudent(StudentDTO studentDTO) {
+        return new Student(
+                studentDTO.getId(),
+                studentDTO.getName(),
+                studentDTO.getAge(),
+                facultyRepository.getReferenceById(studentDTO.getId())
+        );
     }
 }
