@@ -1,11 +1,11 @@
-package ru.hogwarts.additionalcoursescool.services.impl;
+package ru.hogwarts.additionalcourseschool.services.impl;
 
 import org.springframework.stereotype.Service;
-import ru.hogwarts.additionalcoursescool.dto.FacultyDTO;
-import ru.hogwarts.additionalcoursescool.model.Faculty;
-import ru.hogwarts.additionalcoursescool.repositories.FacultyRepository;
-import ru.hogwarts.additionalcoursescool.repositories.StudentRepository;
-import ru.hogwarts.additionalcoursescool.services.FacultyService;
+import ru.hogwarts.additionalcourseschool.dto.FacultyDTO;
+import ru.hogwarts.additionalcourseschool.model.Faculty;
+import ru.hogwarts.additionalcourseschool.repositories.FacultyRepository;
+import ru.hogwarts.additionalcourseschool.repositories.StudentRepository;
+import ru.hogwarts.additionalcourseschool.services.FacultyService;
 
 import java.util.ArrayList;
 import java.util.List;

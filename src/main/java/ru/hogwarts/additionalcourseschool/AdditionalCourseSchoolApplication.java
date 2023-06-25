@@ -1,13 +1,13 @@
-package ru.hogwarts.additionalcoursescool;
+package ru.hogwarts.additionalcourseschool;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AdditionalCourseScoolApplication {
+public class AdditionalCourseSchoolApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AdditionalCourseScoolApplication.class, args);
+        SpringApplication.run(AdditionalCourseSchoolApplication.class, args);
     }
 
 }

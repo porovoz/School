@@ -1,10 +1,10 @@
-package ru.hogwarts.additionalcoursescool;
+package ru.hogwarts.additionalcourseschool;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AdditionalCourseScoolApplicationTests {
+class AdditionalCourseSchoolApplicationTests {
 
     @Test
     void contextLoads() {

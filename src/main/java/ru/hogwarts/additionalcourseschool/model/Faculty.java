@@ -1,4 +1,4 @@
-package ru.hogwarts.additionalcoursescool.model;
+package ru.hogwarts.additionalcourseschool.model;
 
 import javax.persistence.*;
 import java.util.List;

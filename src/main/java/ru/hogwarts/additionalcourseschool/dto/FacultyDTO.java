@@ -1,4 +1,4 @@
-package ru.hogwarts.additionalcoursescool.dto;
+package ru.hogwarts.additionalcourseschool.dto;
 
 public class FacultyDTO {
     private Long id;

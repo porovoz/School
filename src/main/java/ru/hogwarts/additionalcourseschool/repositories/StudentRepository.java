@@ -1,7 +1,7 @@
-package ru.hogwarts.additionalcoursescool.repositories;
+package ru.hogwarts.additionalcourseschool.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.hogwarts.additionalcoursescool.model.Student;
+import ru.hogwarts.additionalcourseschool.model.Student;
 
 import java.util.List;
 

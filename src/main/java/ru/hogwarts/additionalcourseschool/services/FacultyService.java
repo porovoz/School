@@ -1,6 +1,6 @@
-package ru.hogwarts.additionalcoursescool.services;
+package ru.hogwarts.additionalcourseschool.services;
 
-import ru.hogwarts.additionalcoursescool.dto.FacultyDTO;
+import ru.hogwarts.additionalcourseschool.dto.FacultyDTO;
 
 import java.util.List;
 

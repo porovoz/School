@@ -1,4 +1,4 @@
-package ru.hogwarts.additionalcoursescool.controllers;
+package ru.hogwarts.additionalcourseschool.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,309 +11,309 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.additionalcoursescool.dto.StudentDTO;
-import ru.hogwarts.additionalcoursescool.model.Student;
-import ru.hogwarts.additionalcoursescool.services.StudentService;
+import ru.hogwarts.additionalcourseschool.dto.FacultyDTO;
+import ru.hogwarts.additionalcourseschool.model.Faculty;
+import ru.hogwarts.additionalcourseschool.services.FacultyService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/student")
-@Tag(name = "Students", description = "CRUD-operations to work with the students")
-public class StudentController {
-private final StudentService studentService;
+@RequestMapping("/faculty")
+@Tag(name = "Faculties", description = "CRUD-operations to work with the faculties")
+public class FacultyController {
+    private final FacultyService facultyService;
 
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
+    public FacultyController(FacultyService facultyService) {
+        this.facultyService = facultyService;
     }
 
     @PostMapping
     @Operation(
-            summary = "Create new student",
-            description = "Create new student with its number"
+            summary = "Create new faculty",
+            description = "Create new faculty with its number"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Student was successfully created",
+                    description = "Faculty was successfully created",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             )
     })
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
-        StudentDTO createdStudentDTO = studentService.createStudent(studentDTO);
-        return ResponseEntity.ok(createdStudentDTO);
+    public ResponseEntity<FacultyDTO> createFaculty(@RequestBody FacultyDTO facultyDTO) {
+        FacultyDTO createdFacultyDTO = facultyService.createFaculty(facultyDTO);
+        return ResponseEntity.ok(createdFacultyDTO);
     }
 
-    @GetMapping("/{studentId}")
+    @GetMapping("/{facultyId}")
     @Operation(
-            summary = "Find student by its number",
-            description = "Search by student number"
+            summary = "Find faculty by its number",
+            description = "Search by faculty number"
     )
     @Parameters(value = {
-            @Parameter(name = "studentId", example = "1")
+            @Parameter(name = "facultyId", example = "1")
     })
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Student was successfully found",
+                    description = "Faculty was successfully found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Student not found",
+                    description = "Faculty not found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             )
     })
-    public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {
-        StudentDTO studentDTO = studentService.findStudentById(studentId);
-        if (studentDTO == null) {
+    public ResponseEntity<FacultyDTO> getFaculty(@PathVariable Long facultyId) {
+        FacultyDTO facultyDTO = facultyService.findFacultyById(facultyId);
+        if (facultyDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(studentDTO);
+        return ResponseEntity.ok(facultyDTO);
     }
 
-    @GetMapping("/findByAge")
+    @GetMapping("/findByColor")
     @Operation(
-            summary = "Find student list by age",
-            description = "Show student list by age"
+            summary = "Find faculty list by color",
+            description = "Show faculty list by color"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Student list was successfully found",
+                    description = "Faculty list was successfully found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Student list was not found",
+                    description = "Faculty list was not found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             )
     })
-    public ResponseEntity<List<StudentDTO>> getStudentByAge(@RequestParam int age) {
-        List<StudentDTO> studentDTOS = studentService.findStudentByAge(age);
-        if (studentDTOS == null) {
+    public ResponseEntity<List<FacultyDTO>> getFacultyByColor(@RequestParam String color) {
+        List<FacultyDTO> facultyDTOS = facultyService.findFacultyByColor(color);
+        if (facultyDTOS == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(studentDTOS);
+        return ResponseEntity.ok(facultyDTOS);
     }
 
-    @GetMapping("/findByAgeBetween")
+    @GetMapping("/findFacultyByName")
     @Operation(
-            summary = "Find student list by age between",
-            description = "Show student list by age between"
+            summary = "Find faculty by name",
+            description = "Show faculty by name"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Student list was successfully found",
+                    description = "Faculty was successfully found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Student list was not found",
+                    description = "Faculty was not found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             )
     })
-    public ResponseEntity<List<StudentDTO>> getStudentByAgeBetween(@RequestParam int min, @RequestParam int max) {
-        List<StudentDTO> studentDTOS = studentService.findStudentByAgeBetween(min, max);
-        if (studentDTOS == null) {
+    public ResponseEntity<FacultyDTO> getFacultyByName(@RequestParam String name) {
+        FacultyDTO facultyDTO = facultyService.findFacultyByNameIgnoreCase(name);
+        if (facultyDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(studentDTOS);
+        return ResponseEntity.ok(facultyDTO);
     }
 
-    @GetMapping("/getStudentsByFacultyId")
+    @GetMapping("/findByStudentId")
     @Operation(
-            summary = "Find student by faculty id",
-            description = "Search by faculty id"
+            summary = "Find faculty by student id",
+            description = "Show faculty by student id"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Student was successfully found",
+                    description = "Faculty was successfully found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Student not found",
+                    description = "Faculty was not found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             )
     })
-    ResponseEntity<List<StudentDTO>> getStudentsByFacultyId(@RequestParam Long facultyId) {
-        List<StudentDTO> studentDTOS = studentService.findStudentByFacultyId(facultyId);
-        if (studentDTOS == null) {
-            ResponseEntity.notFound().build();
+    public ResponseEntity<FacultyDTO> getFacultyByStudentId(@RequestParam Long studentId) {
+        FacultyDTO facultyDTO = facultyService.findFacultyByStudentId(studentId);
+        if (facultyDTO == null) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(studentDTOS);
+        return ResponseEntity.ok(facultyDTO);
     }
 
     @GetMapping
     @Operation(
-            summary = "Find all students",
-            description = "Show all students"
+            summary = "Find all faculties",
+            description = "Show all faculties"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Students were successfully found",
+                    description = "Faculties were successfully found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Students were not found",
+                    description = "Faculties were not found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             )
     })
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        List<StudentDTO> studentDTOS = studentService.findAllStudents();
-        if (studentDTOS == null) {
+    public ResponseEntity<List<FacultyDTO>> getAllFaculties() {
+        List<FacultyDTO> facultyDTOS = facultyService.findAllFaculties();
+        if (facultyDTOS == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(studentDTOS);
+        return ResponseEntity.ok(facultyDTOS);
     }
 
     @PutMapping
     @Operation(
-            summary = "Update student by its number",
-            description = "Search by student number to update it"
+            summary = "Update faculty by its number",
+            description = "Search by faculty number to update it"
     )
     @Parameters(value = {
-            @Parameter(name = "studentId", example = "1")
+            @Parameter(name = "facultyId", example = "1")
     })
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Student was successfully updated",
+                    description = "Faculty was successfully updated",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Student not found",
+                    description = "Faculty not found",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema =
-                                    @Schema(implementation = Student.class))
+                                    @Schema(implementation = Faculty.class))
                             )
                     }
             )
     })
-    public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO) {
-        StudentDTO updatedStudentDTO = studentService.updateStudent(studentDTO);
-        if (updatedStudentDTO == null) {
+    public ResponseEntity<FacultyDTO> updateFaculty(@RequestBody FacultyDTO facultyDTO) {
+        FacultyDTO updatedFacultyDTO = facultyService.updateFaculty(facultyDTO);
+        if (updatedFacultyDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(updatedStudentDTO);
+        return ResponseEntity.ok(updatedFacultyDTO);
     }
 
-    @DeleteMapping("/{studentId}")
+    @DeleteMapping("/{facultyId}")
     @Operation(
-            summary = "Delete student by its number",
-            description = "Search by student number to delete it"
+            summary = "Delete faculty by its number",
+            description = "Search by faculty number to delete it"
     )
     @Parameters(value = {
-            @Parameter(name = "studentId", example = "1")
+            @Parameter(name = "facultyId", example = "1")
     })
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Student was successfully deleted"
+                    description = "Faculty was successfully deleted"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Student not found"
+                    description = "Faculty not found"
             )
     })
-    public ResponseEntity<Void> deleteStudentById(@PathVariable Long studentId) {
-        studentService.deleteStudent(studentId);
+    public ResponseEntity<Void> deleteFacultyById(@PathVariable Long facultyId) {
+        facultyService.deleteFaculty(facultyId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
     @Operation(
-            summary = "Delete all students",
-            description = "Delete all students"
+            summary = "Delete all faculties",
+            description = "Delete all faculties"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Students were successfully deleted"
+                    description = "Faculties were successfully deleted"
             )
     })
-    public ResponseEntity<Void> deleteAllStudents() {
-        studentService.deleteAllStudents();
+    public ResponseEntity<Void> deleteAllFaculties() {
+        facultyService.deleteAllFaculties();
         return ResponseEntity.ok().build();
     }
 }
