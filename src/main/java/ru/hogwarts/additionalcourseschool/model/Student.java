@@ -11,6 +11,9 @@ public class Student {
     private int age;
     @ManyToOne
     private Faculty faculty;
+    @OneToOne
+    @JoinColumn
+    private Avatar avatar;
 
     public Student() {
     }
