@@ -82,7 +82,7 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<FacultyDTO> getFaculty(@PathVariable Long facultyId) {
+    public ResponseEntity<FacultyDTO> getFaculty(@PathVariable("facultyId") Long facultyId) {
         FacultyDTO facultyDTO = facultyService.findFacultyById(facultyId);
         if (facultyDTO == null) {
             return ResponseEntity.notFound().build();
@@ -119,7 +119,7 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<List<FacultyDTO>> getFacultyByColor(@RequestParam String color) {
+    public ResponseEntity<List<FacultyDTO>> getFacultyByColor(@RequestParam("color") String color) {
         List<FacultyDTO> facultyDTOS = facultyService.findFacultyByColor(color);
         if (facultyDTOS == null) {
             return ResponseEntity.notFound().build();
@@ -156,7 +156,7 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<FacultyDTO> getFacultyByName(@RequestParam String name) {
+    public ResponseEntity<FacultyDTO> getFacultyByName(@RequestParam("name") String name) {
         FacultyDTO facultyDTO = facultyService.findFacultyByNameIgnoreCase(name);
         if (facultyDTO == null) {
             return ResponseEntity.notFound().build();
@@ -193,7 +193,7 @@ public class FacultyController {
                     }
             )
     })
-    public ResponseEntity<FacultyDTO> getFacultyByStudentId(@RequestParam Long studentId) {
+    public ResponseEntity<FacultyDTO> getFacultyByStudentId(@RequestParam("studentId") Long studentId) {
         FacultyDTO facultyDTO = facultyService.findFacultyByStudentId(studentId);
         if (facultyDTO == null) {
             return ResponseEntity.notFound().build();
@@ -296,7 +296,7 @@ public class FacultyController {
                     description = "Faculty not found"
             )
     })
-    public ResponseEntity<Void> deleteFacultyById(@PathVariable Long facultyId) {
+    public ResponseEntity<Void> deleteFacultyById(@PathVariable("facultyId") Long facultyId) {
         facultyService.deleteFaculty(facultyId);
         return ResponseEntity.ok().build();
     }

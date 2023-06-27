@@ -1,8 +1,10 @@
 package ru.hogwarts.additionalcourseschool.services.impl;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.additionalcourseschool.dto.StudentDTO;
 import ru.hogwarts.additionalcourseschool.model.Student;
+import ru.hogwarts.additionalcourseschool.model.YoungestStudents;
 import ru.hogwarts.additionalcourseschool.repositories.FacultyRepository;
 import ru.hogwarts.additionalcourseschool.repositories.StudentRepository;
 import ru.hogwarts.additionalcourseschool.services.StudentService;
@@ -92,6 +94,36 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteAllStudents() {
         studentRepository.deleteAll();
+    }
+
+    @Override
+    public Integer findAllStudentNumber() {
+        return studentRepository.findAllStudentNumber();
+    }
+
+    @Override
+    public Integer findAverageStudentAge() {
+        return studentRepository.findAverageStudentAge();
+    }
+
+    @Override
+    public List<YoungestStudents> findTopYoungestStudents() {
+        return studentRepository.findTopYoungestStudents();
+    }
+
+    @Override
+    public List<StudentDTO> findAllStudentsPageable(Integer pageNumber, Integer pageSize) {
+        if (pageSize > 50 || pageSize <= 0) {
+            pageSize = 50;
+        }
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
+        List<Student> students = studentRepository.findAll(pageRequest).getContent();
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentDTO = fromStudent(student);
+            studentDTOS.add(studentDTO);
+        }
+        return studentDTOS;
     }
 
     private StudentDTO fromStudent(Student student) {

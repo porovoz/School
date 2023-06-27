@@ -44,7 +44,7 @@ public class AvatarController {
                     description = "Internal server error"
             )
     })
-    public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile file) throws IOException {
+    public ResponseEntity<String> uploadAvatar(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) throws IOException {
         if (file.getSize() >= 1024 * 300) {
             return ResponseEntity.badRequest().body("File is too big");
         }
@@ -67,7 +67,7 @@ public class AvatarController {
                     description = "Internal server error"
             )
     })
-    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable("id") Long id) {
         Avatar avatar = avatarService.findByStudentId(id).get();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
@@ -90,7 +90,7 @@ public class AvatarController {
                     description = "Internal server error"
             )
     })
-    public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
+    public void downloadAvatar(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = avatarService.findByStudentId(id).get();
         Path path = Path.of(avatar.getFilePath());
         try (InputStream is = Files.newInputStream(path);

@@ -1,6 +1,7 @@
 package ru.hogwarts.additionalcourseschool.services;
 
 import ru.hogwarts.additionalcourseschool.dto.StudentDTO;
+import ru.hogwarts.additionalcourseschool.model.YoungestStudents;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface StudentService {
     StudentDTO updateStudent(StudentDTO studentDTO);
     void deleteStudent(Long studentId);
     void deleteAllStudents();
+    Integer findAllStudentNumber();
+    Integer findAverageStudentAge();
+    List<YoungestStudents> findTopYoungestStudents();
+    List<StudentDTO> findAllStudentsPageable(Integer pageNumber, Integer pageSize);
 }

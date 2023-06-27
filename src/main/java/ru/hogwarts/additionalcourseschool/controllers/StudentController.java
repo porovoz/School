@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.additionalcourseschool.dto.StudentDTO;
 import ru.hogwarts.additionalcourseschool.model.Student;
+import ru.hogwarts.additionalcourseschool.model.YoungestStudents;
 import ru.hogwarts.additionalcourseschool.services.StudentService;
 
 import java.util.List;
@@ -82,7 +83,7 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {
+    public ResponseEntity<StudentDTO> getStudent(@PathVariable("studentId") Long studentId) {
         StudentDTO studentDTO = studentService.findStudentById(studentId);
         if (studentDTO == null) {
             return ResponseEntity.notFound().build();
@@ -119,7 +120,7 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<List<StudentDTO>> getStudentByAge(@RequestParam int age) {
+    public ResponseEntity<List<StudentDTO>> getStudentByAge(@RequestParam("age") int age) {
         List<StudentDTO> studentDTOS = studentService.findStudentByAge(age);
         if (studentDTOS == null) {
             return ResponseEntity.notFound().build();
@@ -156,7 +157,7 @@ private final StudentService studentService;
                     }
             )
     })
-    public ResponseEntity<List<StudentDTO>> getStudentByAgeBetween(@RequestParam int min, @RequestParam int max) {
+    public ResponseEntity<List<StudentDTO>> getStudentByAgeBetween(@RequestParam("min") int min, @RequestParam("max") int max) {
         List<StudentDTO> studentDTOS = studentService.findStudentByAgeBetween(min, max);
         if (studentDTOS == null) {
             return ResponseEntity.notFound().build();
@@ -193,7 +194,7 @@ private final StudentService studentService;
                     }
             )
     })
-    ResponseEntity<List<StudentDTO>> getStudentsByFacultyId(@RequestParam Long facultyId) {
+    ResponseEntity<List<StudentDTO>> getStudentsByFacultyId(@RequestParam("facultyId") Long facultyId) {
         List<StudentDTO> studentDTOS = studentService.findStudentByFacultyId(facultyId);
         if (studentDTOS == null) {
             ResponseEntity.notFound().build();
@@ -236,6 +237,155 @@ private final StudentService studentService;
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(studentDTOS);
+    }
+
+    @GetMapping("/findAllStudentsPageable")
+    @Operation(
+            summary = "Find all students pageable",
+            description = "Show all students pageable"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Students were successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Students were not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            )
+    })
+    public ResponseEntity<List<StudentDTO>> getAllStudentsPageable(
+            @RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize) {
+        List<StudentDTO> studentDTOS = studentService.findAllStudentsPageable(pageNumber, pageSize);
+        if (studentDTOS == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(studentDTOS);
+    }
+
+    @GetMapping("/findAllStudentNumber")
+    @Operation(
+            summary = "Find all student number",
+            description = "Show all student number"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Student number was successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Student number was not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            )
+    })
+    public ResponseEntity<Integer> findAllStudentNumber() {
+        Integer allStudentNumber = studentService.findAllStudentNumber();
+        if (allStudentNumber == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allStudentNumber);
+    }
+
+    @GetMapping("/findAverageStudentAge")
+    @Operation(
+            summary = "Find student average age",
+            description = "Show student average age"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Student average age was successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Student average age was not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            )
+    })
+    public ResponseEntity<Integer> findAverageStudentAge() {
+        Integer averageStudentAge = studentService.findAverageStudentAge();
+        if (averageStudentAge == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(averageStudentAge);
+    }
+
+    @GetMapping("/findTopYoungestStudents")
+    @Operation(
+            summary = "Find top youngest students",
+            description = "Show top youngest students"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Student average age was successfully found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Student average age was not found",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema =
+                                    @Schema(implementation = Student.class))
+                            )
+                    }
+            )
+    })
+    public ResponseEntity<List<YoungestStudents>> findTopYoungestStudents() {
+        List<YoungestStudents> youngestStudents = studentService.findTopYoungestStudents();
+        if (youngestStudents == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(youngestStudents);
     }
 
     @PutMapping
@@ -296,7 +446,7 @@ private final StudentService studentService;
                     description = "Student not found"
             )
     })
-    public ResponseEntity<Void> deleteStudentById(@PathVariable Long studentId) {
+    public ResponseEntity<Void> deleteStudentById(@PathVariable("studentId") Long studentId) {
         studentService.deleteStudent(studentId);
         return ResponseEntity.ok().build();
     }
