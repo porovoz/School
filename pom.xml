@@ -11,8 +11,8 @@
     <groupId>ru.hogwarts</groupId>
     <artifactId>AdditionalCourseSchool</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>AdditionalCourseScool</name>
-    <description>AdditionalCourseScool</description>
+    <name>AdditionalCourseSchool</name>
+    <description>AdditionalCourseSchool</description>
     <properties>
         <java.version>17</java.version>
     </properties>
